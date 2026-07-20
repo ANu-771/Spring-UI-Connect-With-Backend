@@ -19,5 +19,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query(value = "SELECT new com.example.spring_security_test.dto.UserDTO(u.userId, u.userName, u.userRoles) FROM User u")
     List<UserDTO> getAllUsers();
 
-
+    @Query(value = "SELECT new com.example.spring_security_test.dto.UserDTO(u.userId, u.userName, u.userRoles) FROM User u WHERE u.userName LIKE %:username%")
+    List<UserDTO> searchByUserName(String username);
 }

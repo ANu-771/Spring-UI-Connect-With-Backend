@@ -12,4 +12,6 @@ public interface UserService {
     void saveUser(UserDTO userDTO);
 
     List<UserDTO> getAllUsers();
+
+    List<UserDTO> searchUserByUsername(String username);
 }

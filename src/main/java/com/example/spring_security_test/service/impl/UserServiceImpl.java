@@ -43,4 +43,9 @@ public class UserServiceImpl implements UserService {
         List<UserDTO> allUsers = userRepository.getAllUsers();
         return allUsers;
     }
+
+    @Override
+    public List<UserDTO> searchUserByUsername(String username) {
+        return userRepository.searchByUserName(username);
+    }
 }

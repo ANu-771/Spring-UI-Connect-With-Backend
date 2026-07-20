@@ -30,5 +30,10 @@ public class UserController {
         return new CommonResponse(0, allUsers, "Get All users API"); //
     }
 
+    @GetMapping(value = "/search/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CommonResponse searchUser(@PathVariable String username) {
+        List<UserDTO> users = userService.searchUserByUsername(username);
+        return new CommonResponse(0, users, "Search successful");
+    }
 
 }

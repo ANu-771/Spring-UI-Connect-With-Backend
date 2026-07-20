@@ -48,6 +48,19 @@
             font-weight: bold;
         }
 
+        .search-section {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        #searchInput {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -82,6 +95,12 @@
         <button class="primary-btn" onclick="window.location.href='signup.html'">+ Add New User</button>
     </div>
 
+    <!-- Search Section -->
+    <div class="search-section">
+        <input type="text" id="searchInput" placeholder="Search by username...">
+        <button class="primary-btn" onclick="searchUsers()">Search</button>
+    </div>
+
     <div id="error-msg">You are not authorized. Please log in first.</div>
 
     <table id="userTable">
@@ -100,38 +119,67 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
     $(document).ready(function () {
+        loadUsers();
+    });
+
+    // Function to load all users
+    function loadUsers() {
         $.ajax({
-            // Ensure this URL matches your UserController mapping
             url: "http://localhost:8080/v1/user/all",
             type: "GET",
-            contentType: "application/json",
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem("JWT")
             },
             success: function (response) {
-                let html = "";
-                if (response.body && response.body.length > 0) {
-                    for (const responseElement of response.body) {
-                        html += `<tr>
-                                    <td>${responseElement.userId}</td>
-                                    <td>${responseElement.username}</td>
-                                    <td>${responseElement.userRoles}</td>
-                                 </tr>`;
-                    }
-                    $('#userTblBody').html(html);
-                } else {
-                    console.log("No user data found in response body.");
-                }
-            },
-            error: function (xhr) {
-                console.error("Error fetching users:", xhr);
+                renderTable(response.body);
             }
         });
-    });
+    }
+
+    // New search function
+    function searchUsers() {
+        let username = $('#searchInput').val();
+
+        if (!username) {
+            loadUsers();
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/v1/user/search/" + username,
+            type: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("JWT")
+            },
+            success: function (response) {
+                renderTable(response.body);
+            },
+            error: function () {
+                alert("Error searching for user.");
+            }
+        });
+    }
+
+    // Helper function to render table rows
+    function renderTable(users) {
+        let html = "";
+        let tbody = $('#userTblBody');
+        tbody.empty();
+
+        if (users && users.length > 0) {
+            users.forEach(user => {
+                html += `<tr>
+                            <td>${user.userId}</td>
+                            <td>${user.username}</td>
+                            <td>${user.userRoles}</td>
+                         </tr>`;
+            });
+            tbody.html(html);
+        } else {
+            tbody.html("<tr><td colspan='3' style='text-align:center;'>No users found.</td></tr>");
+        }
+    }
 </script>
-
-
-
 
 </body>
 </html>
