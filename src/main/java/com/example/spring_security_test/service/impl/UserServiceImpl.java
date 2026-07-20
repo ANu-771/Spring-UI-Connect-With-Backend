@@ -48,4 +48,13 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> searchUserByUsername(String username) {
         return userRepository.searchByUserName(username);
     }
+
+    @Override
+    public void deleteUser(Long userId) {
+        if (userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
+        } else {
+            throw new RuntimeException("User not found with ID: " + userId);
+        }
+    }
 }

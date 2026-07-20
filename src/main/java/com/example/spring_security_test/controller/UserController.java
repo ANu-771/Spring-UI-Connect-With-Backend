@@ -36,4 +36,10 @@ public class UserController {
         return new CommonResponse(0, users, "Search successful");
     }
 
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CommonResponse deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return new CommonResponse(0, "Success", "User deleted successfully");
+    }
+
 }
