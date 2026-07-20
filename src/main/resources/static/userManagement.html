@@ -123,7 +123,16 @@
         loadUsers();
     });
 
-    // Function to load all users
+    let typingTimer;
+    let doneTypingInterval = 300;
+
+    $('#searchInput').on('input', function () {
+        clearTimeout(typingTimer);
+
+        typingTimer = setTimeout(searchUsers, doneTypingInterval);
+    });
+
+
     function loadUsers() {
         $.ajax({
             url: "http://localhost:8080/v1/user/all",
