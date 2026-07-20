@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Sign up form</h2>
+
+<form>
+    <label>User Name</label><br>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <label>Password</label><br>
+    <input type="text" id="password_1" name="password_1" required><br><br>
+
+    <label>Confirm Password</label><br>
+    <input type="text" id="password_2" name="password_2" required><br><br>
+
+    <label>User Roles</label><br>
+    <input type="text" id="userRoles" name="userRoles" required><br><br>
+
+    <button type="button" onclick="handleSignUp()">Sign Up</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+    function handleSignUp() {
+        let username = $('#username').val().trim();
+        let password_1 = $('#password_1').val().trim();
+        let password_2 = $('#password_2').val().trim();
+        let userRoles = $('#userRoles').val();
+
+        if(!username || !password_1 || !password_2 || !userRoles){
+            alert("All fields are required");
+            return;
+        }
+
+        if (password_1 !== password_2) {
+            alert("Passwords are not equal");
+            return;
+        }
+
+        console.log(username, password_1, password_2);
+        console.log(password_1, password_2);
+
+
+        const obj = JSON.stringify({
+            "userId" : 0,
+            "username": username,
+            "password": password_1,
+            "userRoles": userRoles
+        });
+
+        console.log(localStorage.getItem("JWT"));
+
+        $.ajax({
+            url: "http://localhost:8080/v1/user",
+            type: "POST",
+            contentType: "application/json",
+            data: obj,
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("JWT")
+            },
+            success: function (response) {
+                alert(response.message);
+            },
+            error: function (response) {
+                console.error("Error signing up:", response);
+            }
+        });
+    }
+</script>
+</body>
+</html>
