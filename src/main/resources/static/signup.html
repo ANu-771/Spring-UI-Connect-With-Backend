@@ -2,34 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <style>
         body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            margin-top: 50px;
+            background-color: #f4f6f8;
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: #0056b3;
+            margin-top: 0;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding doesn't affect width */
+        }
+
+        .primary-btn {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .primary-btn:hover {
+            background-color: #004494;
         }
     </style>
 </head>
 <body>
 
-<h2>Sign up form</h2>
+<div class="container">
+    <h2>Sign Up</h2>
 
-<form>
-    <label>User Name</label><br>
-    <input type="text" id="username" name="username" required><br><br>
+    <form id="signupForm">
+        <label>User Name</label>
+        <input type="text" id="username" required>
 
-    <label>Password</label><br>
-    <input type="text" id="password_1" name="password_1" required><br><br>
+        <label>Password</label>
+        <input type="password" id="password_1" required>
 
-    <label>Confirm Password</label><br>
-    <input type="text" id="password_2" name="password_2" required><br><br>
+        <label>Confirm Password</label>
+        <input type="password" id="password_2" required>
 
-    <label>User Roles</label><br>
-    <input type="text" id="userRoles" name="userRoles" required><br><br>
+        <label>User Roles</label>
+        <input type="text" id="userRoles" required>
 
-    <button type="button" onclick="handleSignUp()">Sign Up</button>
-</form>
+        <button type="button" class="primary-btn" onclick="handleSignUp()">Sign Up</button>
+    </form>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
@@ -50,18 +104,12 @@
             return;
         }
 
-        console.log(username, password_1, password_2);
-        console.log(password_1, password_2);
-
-
         const obj = JSON.stringify({
             "userId" : 0,
             "username": username,
             "password": password_1,
             "userRoles": userRoles
         });
-
-        console.log(localStorage.getItem("JWT"));
 
         $.ajax({
             url: "http://localhost:8080/v1/user",
@@ -73,9 +121,11 @@
             },
             success: function (response) {
                 alert(response.message);
+                window.location.href = 'userManagement.html'; // Redirect to table after success
             },
             error: function (response) {
                 console.error("Error signing up:", response);
+                alert("Sign up failed.");
             }
         });
     }
