@@ -7,8 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "v1/user")
+@CrossOrigin
 @RequiredArgsConstructor
 public class UserController {
 
@@ -21,6 +24,11 @@ public class UserController {
     }
 
 
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CommonResponse getAllUsers() { //
+        List<UserDTO> allUsers = userService.getAllUsers(); //
+        return new CommonResponse(0, allUsers, "Get All users API"); //
+    }
 
 
 }

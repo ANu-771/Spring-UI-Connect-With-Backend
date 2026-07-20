@@ -7,6 +7,8 @@ import com.example.spring_security_test.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,5 +36,11 @@ public class UserServiceImpl implements UserService {
         user.setPassword(userDTO.getPassword());
         user.setUserRoles(userDTO.getUserRoles());
         userRepository.save(user);
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        List<UserDTO> allUsers = userRepository.getAllUsers();
+        return allUsers;
     }
 }
