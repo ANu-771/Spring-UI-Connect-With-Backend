@@ -91,8 +91,12 @@
                 console.log("Token:", response.body.token);
                 console.log("User ID:", response.body.userId);
 
+
                 localStorage.setItem("JWT", response.body.token);
                 localStorage.setItem("userId", response.body.userId);
+
+                window.location.href = 'userManagement.html';
+
             },
             error: function (xhr) {
                 if (xhr.status === 403) {
